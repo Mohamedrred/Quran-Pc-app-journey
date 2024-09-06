@@ -77,6 +77,7 @@ def download_all_verses():
 
 
 def play_audio(file_path):
+    global stop_verses
     stop_verses = False
     """Play the audio file using Pygame."""
     if not pygame.mixer.get_init():
@@ -125,8 +126,7 @@ def play_surah():
         surah_id = dynamic_variables['Surah Names']['index'] + 1
         reciter_id = dynamic_variables['Reciters Names']['index'] + 1
         def never_stop(surah_id):
-            while never_stop_var.get() and not stop_verses:
-                print(stop_verses)
+            while not stop_verses:
                 if surah_id < 115:
                     req = requests.get(f'https://api.quran.com/api/v4/chapter_recitations/{reciter_id}/{surah_id}')
                     data = req.json()
@@ -156,7 +156,7 @@ def play_surah():
                     play_audio(file_path)
                 else:
                     print("Failed to download or play audio.")
-        except requests.RequestException as e:
+        except Exception as e:
             print(f"Failed to fetch audio URL: {e}")
     else:
         print("Dynamic variables for 'Surah Names' or 'Reciters Names' are not set.")
@@ -419,9 +419,9 @@ def main():
     # Fetch and display verses as buttons
     def get_surah_text():
         if 'Surah Names' in dynamic_variables:
-            surah_id = dynamic_variables['Surah Names']['index'] + 1
+            surah_id = dynamic_variables['Surah Names']['index']
             try:
-                req = requests.get(f'{base_url}quran/verses/uthmani?chapter_number={surah_id}')
+                req = requests.get(f'{base_url}quran/verses/uthmani?chapter_number={surah_id + 1}')
                 req.raise_for_status()
                 data = req.json()
 
@@ -434,11 +434,11 @@ def main():
                     widget.destroy()
 
                 for index, verse in enumerate(verses):
-                    verse_id = index + 1  # Unique ID for each button
+                    verse_id = index  # Unique ID for each button
                     verse_img_path = get_verse_image_path('quranpngs', surah_id)
-                    get_verse_img_path = os.path.join(verse_img_path, f'{surah_id}_{verse_id}.png')
+                    get_verse_img_path = os.path.join(verse_img_path, f'{surah_id + 1}_{verse_id + 1}.png')
                     create_button_with_id_for_verses(middle_frame, index, 0, get_verse_img_path,
-                                                     lambda vid=verse_id - 1: play_verse(vid),
+                                                     lambda vid=verse_id: play_verse(vid),
                                                      id=verse_id)
                     time.sleep(0.005)
 
