@@ -12,7 +12,7 @@ https://api-docs.quran.com/docs/category/quran.com-api
 - 12 reciters ✅
 - keep playing Chapter or Verse in a loop ✅
 - Display verses ✅
-- Conrolle volume
+- Control volume ✅
 - Transilation to any other language ❌ only Arabic for now.
 - Tfsir ❌
 - Light/dark mode toggle ❌
