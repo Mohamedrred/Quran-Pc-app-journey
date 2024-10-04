@@ -1,3 +1,4 @@
 pygame>=2.1.0
 requests>=2.31.0
 Pillow>=9.5.0
+customtkinter
